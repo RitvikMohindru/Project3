@@ -169,6 +169,103 @@ d3.csv("./plots_data/fig3.csv")
       .text("Mouse Gender")
       .style("font-family", "'Roboto', sans-serif")
       .style("font-size", "15px");
+
+    // Add interactive circles
+    addCircles(maleData, "male", "#4e8bc4");
+    addCircles(femaleData, "female", "#DA4167");
+
+    function addCircles(data, genderClass, color) {
+      chartGroup
+        .selectAll(`circle.${genderClass}`)
+        .data(data)
+        .enter()
+        .append("circle")
+        .attr("class", genderClass)
+        .attr("cx", (d) => xScale(d.day))
+        .attr("cy", (d) => yScale(d.activity))
+        .attr("r", 5)
+        .attr("fill", color)
+        .style("cursor", "pointer")
+        .on("mouseover", (event, d) => {
+          tooltip
+            .style("visibility", "visible")
+            .html(
+              `<strong>Day:</strong> ${d.day} <br> <strong>Activity:</strong> ${d.activity}`
+            )
+            .style("top", `${event.pageY - 30}px`)
+            .style("left", `${event.pageX + 10}px`);
+        })
+        .on("mousemove", (event) => {
+          tooltip
+            .style("top", `${event.pageY - 30}px`)
+            .style("left", `${event.pageX + 10}px`);
+        })
+        .on("mouseout", () => {
+          tooltip.style("visibility", "hidden");
+        });
+    }
+
+    const tooltip = d3
+      .select("body")
+      .append("div")
+      .style("position", "absolute")
+      .style("background", "rgba(0, 0, 0, 0.8)")
+      .style("color", "#fff")
+      .style("padding", "8px")
+      .style("border-radius", "5px")
+      .style("font-size", "12px")
+      .style("visibility", "hidden");
+
+    // Add vertical line and tooltips for activity levels
+    const verticalLine = chartGroup
+      .append("line")
+      .attr("stroke", "gray")
+      .attr("stroke-width", 1)
+      .attr("stroke-dasharray", "4 4")
+      .attr("y1", 0)
+      .attr("y2", height)
+      .style("visibility", "hidden");
+
+    const activityTooltip = chartGroup
+      .append("text")
+      .attr("x", 10)
+      .attr("y", 10)
+      .attr("fill", "black")
+      .style("font-family", "'Roboto', sans-serif")
+      .style("font-size", "12px")
+      .style("visibility", "hidden");
+
+    svg
+      .on("mousemove", (event) => {
+        const [mouseX] = d3.pointer(event);
+        const x0 = xScale.invert(mouseX - margin.left);
+        const closestDay = Math.round(x0);
+
+        const maleActivity = maleData.find((d) => d.day === closestDay)?.activity;
+        const femaleActivity = femaleData.find((d) => d.day === closestDay)?.activity;
+
+        if (maleActivity !== undefined && femaleActivity !== undefined) {
+          verticalLine
+            .attr("x1", xScale(closestDay))
+            .attr("x2", xScale(closestDay))
+            .style("visibility", "visible");
+
+          activityTooltip
+            .attr("x", xScale(closestDay) + 10)
+            .attr("y", 10)
+            .html(
+              `Day: ${closestDay}<br>Male Activity: ${maleActivity}<br>Female Activity: ${femaleActivity}`
+            )
+            .style("visibility", "visible");
+        } else {
+          verticalLine.style("visibility", "hidden");
+          activityTooltip.style("visibility", "hidden");
+        }
+      })
+      .on("mouseout", () => {
+        verticalLine.style("visibility", "hidden");
+        activityTooltip.style("visibility", "hidden");
+      });
   })
   .catch((error) => {
     console.error("Error loading the CSV file:", error);
