@@ -20,10 +20,10 @@ d3.csv("./plots_data/fig3.csv")
       .attr("width", svgWidth)
       .attr("height", svgHeight);
 
-    const maleData = data.filter((d) => d.gender === "Male");
-    const femaleData = data.filter((d) => d.gender === "Female");
+    const maleData = data.filter((d) => d.gender === "male");
+    const femaleData = data.filter((d) => d.gender === "female");
 
-    const xScale = d3.scaleLinear().domain([0.5, 13.5]).range([0, width]);
+    const xScale = d3.scaleLinear().domain([0.5, 14.5]).range([0, width]);
 
     const yScale = d3
       .scaleLinear()
