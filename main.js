@@ -7,9 +7,9 @@ d3.csv("./plots_data/fig3.csv")
       d.activity = parseFloat(d.activity);
     });
 
-    const svgWidth = 1000;
-    const svgHeight = 600;
-    const margin = { top: 50, right: 100, bottom: 100, left: 100 };
+    const svgWidth = 1100;
+    const svgHeight = 650;
+    const margin = { top: 100, right: 100, bottom: 80, left: 100 };
 
     const width = svgWidth - margin.left - margin.right;
     const height = svgHeight - margin.top - margin.bottom;
@@ -17,8 +17,10 @@ d3.csv("./plots_data/fig3.csv")
     const svg = d3
       .select("#plot")
       .append("svg")
-      .attr("width", svgWidth)
-      .attr("height", svgHeight);
+      .attr("width", "100%")
+      .attr("height", "auto")
+      .attr("viewBox", `0 0 ${svgWidth} ${svgHeight}`)
+      .attr("preserveAspectRatio", "xMidYMid meet");
 
     const maleData = data.filter((d) => d.gender === "male");
     const femaleData = data.filter((d) => d.gender === "female");
@@ -89,13 +91,13 @@ d3.csv("./plots_data/fig3.csv")
       .append("g")
       .attr("transform", `translate(0, ${height})`)
       .call(xAxis)
-      .style("font-family", "'Roboto', sans-serif")
+      .style("font-family", "'Merriweather'")
       .style("font-size", "14px");
 
     chartGroup
       .append("g")
       .call(yAxis)
-      .style("font-family", "'Roboto', sans-serif")
+      .style("font-family", "'Merriweather'")
       .style("font-size", "14px");
 
     chartGroup
@@ -103,7 +105,7 @@ d3.csv("./plots_data/fig3.csv")
       .attr("x", width / 2)
       .attr("y", height + 40)
       .attr("text-anchor", "middle")
-      .style("font-family", "'Roboto', sans-serif")
+      .style("font-family", "'Merriweather'")
       .style("font-size", "16px")
       .text("Day");
 
@@ -113,26 +115,83 @@ d3.csv("./plots_data/fig3.csv")
       .attr("x", -height / 2)
       .attr("y", -50)
       .attr("text-anchor", "middle")
-      .style("font-family", "'Roboto', sans-serif")
+      .style("font-family", "'Merriweather'")
       .style("font-size", "16px")
       .text("Activity Level");
 
     svg
       .append("text")
-      .attr("x", svgWidth / 2)
-      .attr("y", 30)
+      .attr("x", svgWidth / 2.1)
+      .attr("y", 55)
       .attr("text-anchor", "middle")
-      .style("font-family", "'Roboto', sans-serif")
-      .style("font-size", "18px")
+      .style("font-family", "'Merriweather'")
+      .style("font-size", "24px")
+      .style("font-weight", "bolder")
       .text("How Do Daily Activity Levels Vary Between Male and Female Mice?");
 
-    const legend = svg.append("g").attr("transform", "translate(850, 50)");
+    const tooltip = d3
+      .select("body")
+      .append("div")
+      .style("position", "absolute")
+      .style("background", "rgba(0, 0, 0, 0.8)")
+      .style("color", "#fff")
+      .style("padding", "8px")
+      .style("border-radius", "5px")
+      .style("font-size", "12px")
+      .style("visibility", "hidden");
+
+    const verticalLine = chartGroup
+      .append("line")
+      .attr("stroke", "#5B5B5B")
+      .attr("stroke-width", 1.5)
+      .attr("stroke-dasharray", "5 10")
+      .attr("y1", 0)
+      .attr("y2", height)
+      .style("visibility", "hidden");
+
+    svg
+      .on("mousemove", (event) => {
+        const [mouseX] = d3.pointer(event);
+        const x0 = xScale.invert(mouseX - margin.left);
+        const closestDay = Math.round(x0);
+
+        const maleActivity = maleData.find(
+          (d) => d.day === closestDay
+        )?.activity;
+        const femaleActivity = femaleData.find(
+          (d) => d.day === closestDay
+        )?.activity;
+
+        if (maleActivity !== undefined && femaleActivity !== undefined) {
+          verticalLine
+            .attr("x1", xScale(closestDay))
+            .attr("x2", xScale(closestDay))
+            .style("visibility", "visible");
+
+          tooltip
+            .style("visibility", "visible")
+            .html(
+              `Day: ${closestDay}<br>Male Activity: ${maleActivity}<br>Female Activity: ${femaleActivity}`
+            )
+            .style("top", `${event.pageY - 30}px`)
+            .style("left", `${event.pageX + 10}px`);
+        } else {
+          verticalLine.style("visibility", "hidden");
+          tooltip.style("visibility", "hidden");
+        }
+      })
+      .on("mouseout", () => {
+        verticalLine.style("visibility", "hidden");
+        tooltip.style("visibility", "hidden");
+      });
+
+    const legend = svg.append("g").attr("transform", "translate(1012, 65)");
 
     legend
       .append("circle")
       .attr("cx", -30)
       .attr("cy", 41)
-      .attr("r", 4)
+      .attr("r", 5)
       .attr("fill", "#4e8bc4");
 
     legend
@@ -140,16 +199,16 @@ d3.csv("./plots_data/fig3.csv")
       .attr("x", -20)
       .attr("y", 45)
       .text("Male")
-      .style("font-family", "'Roboto', sans-serif")
+      .style("font-family", "'Merriweather'")
       .style("font-size", "14px");
 
-    const legend2 = svg.append("g").attr("transform", "translate(850, 70)");
+    const legend2 = svg.append("g").attr("transform", "translate(1012, 85)");
 
     legend2
       .append("circle")
       .attr("cx", -30)
       .attr("cy", 41)
-      .attr("r", 4)
+      .attr("r", 5)
       .attr("fill", "#DA4167");
 
     legend2
@@ -157,20 +216,22 @@ d3.csv("./plots_data/fig3.csv")
       .attr("x", -20)
       .attr("y", 45)
       .text("Female")
-      .style("font-family", "'Roboto', sans-serif")
+      .style("font-family", "'Merriweather'")
       .style("font-size", "14px");
 
-    const legendTitle = svg.append("g").attr("transform", "translate(850, 70)");
+    const legendTitle = svg
+      .append("g")
+      .attr("transform", "translate(1012, 85)");
 
     legendTitle
       .append("text")
       .attr("x", -50)
       .attr("y", 5)
       .text("Mouse Gender")
-      .style("font-family", "'Roboto', sans-serif")
+      .style("font-weight", "bold")
+      .style("font-family", "'Merriweather'")
       .style("font-size", "15px");
 
-    // Add interactive circles
     addCircles(maleData, "male", "#4e8bc4");
     addCircles(femaleData, "female", "#DA4167");
 
@@ -204,72 +265,6 @@ d3.csv("./plots_data/fig3.csv")
           tooltip.style("visibility", "hidden");
         });
     }
-
-    const tooltip = d3
-      .select("body")
-      .append("div")
-      .style("position", "absolute")
-      .style("background", "rgba(0, 0, 0, 0.8)")
-      .style("color", "#fff")
-      .style("padding", "8px")
-      .style("border-radius", "5px")
-      .style("font-size", "12px")
-      .style("visibility", "hidden");
-
-    // Add vertical line and tooltips for activity levels
-    const verticalLine = chartGroup
-      .append("line")
-      .attr("stroke", "gray")
-      .attr("stroke-width", 1)
-      .attr("stroke-dasharray", "4 4")
-      .attr("y1", 0)
-      .attr("y2", height)
-      .style("visibility", "hidden");
-
-    const activityTooltip = chartGroup
-      .append("text")
-      .attr("x", 10)
-      .attr("y", 10)
-      .attr("fill", "black")
-      .style("font-family", "'Roboto', sans-serif")
-      .style("font-size", "12px")
-      .style("visibility", "hidden");
-
-    svg
-      .on("mousemove", (event) => {
-        const [mouseX] = d3.pointer(event);
-        const x0 = xScale.invert(mouseX - margin.left);
-        const closestDay = Math.round(x0);
-
-        const maleActivity = maleData.find(
-          (d) => d.day === closestDay
-        )?.activity;
-        const femaleActivity = femaleData.find(
-          (d) => d.day === closestDay
-        )?.activity;
-
-        if (maleActivity !== undefined && femaleActivity !== undefined) {
-          verticalLine
-            .attr("x1", xScale(closestDay))
-            .attr("x2", xScale(closestDay))
-            .style("visibility", "visible");
-
-          activityTooltip
-            .attr("x", xScale(closestDay) + 10)
-            .attr("y", 10)
-            .html(
-              `Day: ${closestDay}<br>Male Activity: ${maleActivity}<br>Female Activity: ${femaleActivity}`
-            )
-            .style("visibility", "visible");
-        } else {
-          verticalLine.style("visibility", "hidden");
-          activityTooltip.style("visibility", "hidden");
-        }
-      })
-      .on("mouseout", () => {
-        verticalLine.style("visibility", "hidden");
-        activityTooltip.style("visibility", "hidden");
-      });
   })
   .catch((error) => {
     console.error("Error loading the CSV file:", error);

@@ -2,31 +2,74 @@ svg {
   border: 1px solid #ccc;
   display: block;
   margin: 0 auto;
+  border-radius: 15px;
+  background-color: #f9f9f9;
+  box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.2);
+  padding: 5px;
+  width: 100%;
+  height: auto;
+}
+
+h5 {
+  font-weight: lighter;
+  font-size: 13px;
+}
+
+#plot {
+  width: 100%;
+  max-width: 1000px;
+  margin: 0 auto;
+  padding: 5px;
+}
+
+body {
+  font-family: "Merriweather";
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+h2 {
+  font-size: 30px;
 }
 
 .axis path,
 .axis line {
   fill: none;
   shape-rendering: crispEdges;
+  stroke: #888;
+}
+
+.axis text {
+  font-family: Arial, sans-serif;
+  font-size: 12px;
+  fill: #333;
 }
 
 text {
   font-family: Arial, sans-serif;
   font-size: 12px;
+  fill: #333;
 }
 
 .legend text {
   font-size: 12px;
+  fill: #333;
 }
 
 #tooltip {
   position: absolute;
-  background-color: rgba(0, 0, 0, 0.8);
+  background-color: rgba(70, 70, 70, 0.8);
   color: white;
-  padding: 10px;
-  border-radius: 5px;
-  font-size: 14px;
-  visibility: hidden;
-  pointer-events: none;
+  padding: 12px 12px;
+  border-radius: 20px;
+  font-size: 12px;
   white-space: nowrap;
+  box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.3);
+  z-index: 10;
+  visibility: hidden;
+}
+
+.legend {
+  font-family: Arial, sans-serif;
+  font-size: 12px;
 }
