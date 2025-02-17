@@ -83,13 +83,47 @@ text {
   width: 100%;
 }
 
-#plot {
-  margin-left: 3%;
-  padding: 0;
-}
-
 #small-plot {
   width: 60%;
   height: auto;
   padding-right: 50px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-top: 10px;
+}
+
+#small-plot-svg {
+  height: 300px;
+}
+
+#slider {
+  width: 80%;
+  margin-top: 20px;
+}
+
+#slider {
+  width: 90%;
+  height: 8px;
+  border-radius: 5px;
+  /* Remove default styling */
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
+}
+
+#slider::-webkit-slider-runnable-track {
+  background: #197e7882;
+  height: 8px;
+  border-radius: 5px;
+}
+
+#slider::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  width: 20px;
+  height: 20px;
+  background: #215855;
+  border-radius: 50%;
+  cursor: pointer;
+  margin-top: -6px;
 }

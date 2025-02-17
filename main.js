@@ -9,7 +9,7 @@ d3.csv("./plots_data/fig3.csv")
 
     const svgWidth = 1100;
     const svgHeight = 750;
-    const margin = { top: 100, right: 100, bottom: 80, left: 100 };
+    const margin = { top: 100, right: 125, bottom: 80, left: 100 };
 
     const width = svgWidth - margin.left - margin.right;
     const height = svgHeight - margin.top - margin.bottom;
@@ -23,7 +23,7 @@ d3.csv("./plots_data/fig3.csv")
       .attr("preserveAspectRatio", "xMidYMid meet");
 
     const svgSmall = d3
-      .select("#small-plot")
+      .select("#small-plot-svg")
       .append("svg")
       .attr("width", "100%")
       .attr("height", "100%")
@@ -195,7 +195,7 @@ d3.csv("./plots_data/fig3.csv")
         tooltip.style("visibility", "hidden");
       });
 
-    const legend = svg.append("g").attr("transform", "translate(1012, 90)");
+    const legend = svg.append("g").attr("transform", "translate(1020, 90)");
 
     legend
       .append("circle")
@@ -210,9 +210,9 @@ d3.csv("./plots_data/fig3.csv")
       .attr("y", 45)
       .text("Male")
       .style("font-family", "'Merriweather'")
-      .style("font-size", "16px");
+      .style("font-size", "17px");
 
-    const legend2 = svg.append("g").attr("transform", "translate(1012, 110)");
+    const legend2 = svg.append("g").attr("transform", "translate(1020, 115)");
 
     legend2
       .append("circle")
@@ -227,11 +227,11 @@ d3.csv("./plots_data/fig3.csv")
       .attr("y", 45)
       .text("Female")
       .style("font-family", "'Merriweather'")
-      .style("font-size", "16px");
+      .style("font-size", "17px");
 
     const legendTitle = svg
       .append("g")
-      .attr("transform", "translate(1012, 105)");
+      .attr("transform", "translate(1010, 105)");
 
     legendTitle
       .append("text")
@@ -275,6 +275,14 @@ d3.csv("./plots_data/fig3.csv")
           tooltip.style("visibility", "hidden");
         });
     }
+
+    document.getElementById("slider").step = "1";
+    const value = document.querySelector("#day-num");
+    const input = document.querySelector("#slider");
+    value.textContent = input.value;
+    input.addEventListener("input", (event) => {
+      value.textContent = event.target.value;
+    });
   })
   .catch((error) => {
     console.error("Error loading the CSV file:", error);
