@@ -281,9 +281,149 @@ d3.csv("./plots_data/fig3.csv")
     const input = document.querySelector("#slider");
     value.textContent = input.value;
     input.addEventListener("input", (event) => {
-      value.textContent = event.target.value;
+      const day = event.target.value;
+      value.textContent = day;
+      updateSmallGraph(day);
     });
+
+    updateSmallGraph(1);
   })
   .catch((error) => {
     console.error("Error loading the CSV file:", error);
   });
+
+  function updateSmallGraph(day) {
+    const filePath = `./plots_data/day${day}.csv`; // Adjust the path as needed
+
+      d3.csv(`./plots_data/day${day}.csv`)
+  .then((smallData) => {
+    smallData.forEach((d) => {
+      d.hour = parseFloat(d.hour);
+      d.activity = parseFloat(d.activity);
+    });
+  
+      const smallWidth = 500; // Adjust as needed
+      const smallHeight = 300;
+      const smallMargin = { top: 50, right: 50, bottom: 50, left: 50 };
+      const innerWidth = smallWidth - smallMargin.left - smallMargin.right;
+      const innerHeight = smallHeight - smallMargin.top - smallMargin.bottom;
+  
+      const xSmallScale = d3.scaleLinear()
+        .domain([1, 24])
+        .range([0, innerWidth]);
+  
+      const ySmallScale = d3.scaleLinear()
+        .domain([0, 60])
+        .range([innerHeight, 0]);
+  
+      // Define line function
+      const lineSmall = d3.line()
+        .x((d) => xSmallScale(d.hour))
+        .y((d) => ySmallScale(d.activity))
+        .curve(d3.curveMonotoneX); // Smooth line
+  
+      // Clear previous graph
+      d3.select("#small-plot-svg svg").remove();
+  
+      // Create new SVG
+      const smallSvg = d3.select("#small-plot-svg")
+        .append("svg")
+        .attr("width", "100%")
+        .attr("height", "100%")
+        .attr("viewBox", `0 0 ${smallWidth} ${smallHeight}`)
+        .attr("preserveAspectRatio", "xMidYMid meet");
+
+        smallSvg
+      .append("text")
+      .attr("x", smallWidth / 2)
+      .attr("y", 10)
+      .attr("text-anchor", "middle")
+      .style("font-family", "'Merriweather'")
+      .style("font-size", "18px")
+      .style("font-weight", "bolder")
+      .text("Hourly Activity Levels for Male and Female Mice");
+
+      smallSvg
+  .append("text")
+  .attr("x", smallWidth / 2)
+  .attr("y", 30) // Adjust the y position for the second line
+  .attr("text-anchor", "middle")
+  .style("font-family", "'Merriweather'")
+  .style("font-size", "18px")
+  .style("font-weight", "bolder")
+  .text("on Day " + day);
+  
+      const smallChartGroup = smallSvg.append("g")
+        .attr("transform", `translate(${smallMargin.left}, ${smallMargin.top})`);
+  
+        // Filter data for male and female
+      const maleSmallData = smallData.filter((d) => d.gender === "male");
+      const femaleSmallData = smallData.filter((d) => d.gender === "female");
+      
+      // Append male line
+      smallChartGroup.append("path")
+        .datum(maleSmallData)
+        .attr("fill", "none")
+        .attr("stroke", "#4e8bc4")
+        .attr("stroke-width", 2)
+        .attr("d", lineSmall);
+
+      // Append female line
+      smallChartGroup.append("path")
+        .datum(femaleSmallData)
+        .attr("fill", "none")
+        .attr("stroke", "#DA4167")
+        .attr("stroke-width", 2)
+        .attr("d", lineSmall);
+  
+      // Add axes
+      const xAxisSmall = d3.axisBottom(xSmallScale).ticks(5);
+      const yAxisSmall = d3.axisLeft(ySmallScale).ticks(5);
+  
+      smallChartGroup.append("g")
+        .attr("transform", `translate(0, ${innerHeight})`)
+        .call(xAxisSmall);
+  
+      smallChartGroup.append("g").call(yAxisSmall);
+
+      smallChartGroup
+      .selectAll("circle.male")
+      .data(maleSmallData)
+      .enter()
+      .append("circle")
+      .attr("cx", (d) => xSmallScale(d.hour))
+      .attr("cy", (d) => ySmallScale(d.activity))
+      .attr("r", 3)
+      .attr("fill", "#4e8bc4");
+
+      smallChartGroup
+      .selectAll("circle.female")
+      .data(femaleSmallData)
+      .enter()
+      .append("circle")
+      .attr("cx", (d) => xSmallScale(d.hour))
+      .attr("cy", (d) => ySmallScale(d.activity))
+      .attr("r", 3)
+      .attr("fill", "#DA4167");
+  
+      // Axis labels
+      smallChartGroup.append("text")
+        .attr("x", innerWidth / 2)
+        .attr("y", innerHeight + 40)
+        .attr("text-anchor", "middle")
+        .style("font-family", "'Merriweather'")
+        .style("font-size", "14px")
+        .text("Hour");
+  
+      smallChartGroup.append("text")
+        .attr("transform", "rotate(-90)")
+        .attr("x", -innerHeight / 2)
+        .attr("y", -40)
+        .attr("text-anchor", "middle")
+        .style("font-family", "'Merriweather'")
+        .style("font-size", "14px")
+        .text("Activity Level");
+    })
+    .catch((error) => console.error(`Error loading ${filePath}:`, error));
+  }
+  
