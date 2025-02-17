@@ -8,7 +8,7 @@ d3.csv("./plots_data/fig3.csv")
     });
 
     const svgWidth = 1100;
-    const svgHeight = 650;
+    const svgHeight = 750;
     const margin = { top: 100, right: 100, bottom: 80, left: 100 };
 
     const width = svgWidth - margin.left - margin.right;
@@ -18,7 +18,15 @@ d3.csv("./plots_data/fig3.csv")
       .select("#plot")
       .append("svg")
       .attr("width", "100%")
-      .attr("height", "auto")
+      .attr("height", "100%")
+      .attr("viewBox", `0 0 ${svgWidth} ${svgHeight}`)
+      .attr("preserveAspectRatio", "xMidYMid meet");
+
+    const svgSmall = d3
+      .select("#small-plot")
+      .append("svg")
+      .attr("width", "100%")
+      .attr("height", "100%")
       .attr("viewBox", `0 0 ${svgWidth} ${svgHeight}`)
       .attr("preserveAspectRatio", "xMidYMid meet");
 
@@ -84,29 +92,31 @@ d3.csv("./plots_data/fig3.csv")
       .attr("r", 4)
       .attr("fill", "#DA4167");
 
-    const xAxis = d3.axisBottom(xScale);
-    const yAxis = d3.axisLeft(yScale);
+    const xAxis = d3.axisBottom(xScale).tickSize(7);
+    const yAxis = d3.axisLeft(yScale).tickSize(7);
 
     chartGroup
       .append("g")
       .attr("transform", `translate(0, ${height})`)
       .call(xAxis)
+      .selectAll("text")
       .style("font-family", "'Merriweather'")
-      .style("font-size", "14px");
+      .style("font-size", "15px");
 
     chartGroup
       .append("g")
       .call(yAxis)
+      .selectAll("text")
       .style("font-family", "'Merriweather'")
-      .style("font-size", "14px");
+      .style("font-size", "15px");
 
     chartGroup
       .append("text")
       .attr("x", width / 2)
-      .attr("y", height + 40)
+      .attr("y", height + 55)
       .attr("text-anchor", "middle")
       .style("font-family", "'Merriweather'")
-      .style("font-size", "16px")
+      .style("font-size", "20px")
       .text("Day");
 
     chartGroup
@@ -116,16 +126,16 @@ d3.csv("./plots_data/fig3.csv")
       .attr("y", -50)
       .attr("text-anchor", "middle")
       .style("font-family", "'Merriweather'")
-      .style("font-size", "16px")
+      .style("font-size", "20px")
       .text("Activity Level");
 
     svg
       .append("text")
-      .attr("x", svgWidth / 2.1)
+      .attr("x", svgWidth / 2)
       .attr("y", 55)
       .attr("text-anchor", "middle")
       .style("font-family", "'Merriweather'")
-      .style("font-size", "24px")
+      .style("font-size", "30px")
       .style("font-weight", "bolder")
       .text("How Do Daily Activity Levels Vary Between Male and Female Mice?");
 
@@ -185,7 +195,7 @@ d3.csv("./plots_data/fig3.csv")
         tooltip.style("visibility", "hidden");
       });
 
-    const legend = svg.append("g").attr("transform", "translate(1012, 65)");
+    const legend = svg.append("g").attr("transform", "translate(1012, 90)");
 
     legend
       .append("circle")
@@ -200,9 +210,9 @@ d3.csv("./plots_data/fig3.csv")
       .attr("y", 45)
       .text("Male")
       .style("font-family", "'Merriweather'")
-      .style("font-size", "14px");
+      .style("font-size", "16px");
 
-    const legend2 = svg.append("g").attr("transform", "translate(1012, 85)");
+    const legend2 = svg.append("g").attr("transform", "translate(1012, 110)");
 
     legend2
       .append("circle")
@@ -217,11 +227,11 @@ d3.csv("./plots_data/fig3.csv")
       .attr("y", 45)
       .text("Female")
       .style("font-family", "'Merriweather'")
-      .style("font-size", "14px");
+      .style("font-size", "16px");
 
     const legendTitle = svg
       .append("g")
-      .attr("transform", "translate(1012, 85)");
+      .attr("transform", "translate(1012, 105)");
 
     legendTitle
       .append("text")
@@ -230,7 +240,7 @@ d3.csv("./plots_data/fig3.csv")
       .text("Mouse Gender")
       .style("font-weight", "bold")
       .style("font-family", "'Merriweather'")
-      .style("font-size", "15px");
+      .style("font-size", "18px");
 
     addCircles(maleData, "male", "#4e8bc4");
     addCircles(femaleData, "female", "#DA4167");

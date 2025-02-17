@@ -1,9 +1,11 @@
 import * as d3 from "https://cdn.jsdelivr.net/npm/d3@7.9.0/+esm";
 
-d3.csv("./plots_data/fig5.csv")
+d3.csv("../plots_data/fig4.csv")
   .then((data) => {
+    console.log("Data loaded:", data);
+
     data.forEach((d) => {
-      d.hour = parseFloat(d.hour);
+      d.day = parseFloat(d.day);
       d.activity = parseFloat(d.activity);
     });
 
@@ -15,31 +17,31 @@ d3.csv("./plots_data/fig5.csv")
     const height = svgHeight - margin.top - margin.bottom;
 
     const svg = d3
-      .select("#chart5")
+      .select("#chart4")
       .append("svg")
       .attr("width", svgWidth)
       .attr("height", svgHeight);
 
-    const maleData = data.filter((d) => d.gender === "male");
-    const femaleData = data.filter((d) => d.gender === "female");
+    const nightData = data.filter((d) => d.time === "night");
+    const dayData = data.filter((d) => d.time === "day");
 
-    const xScale = d3.scaleLinear().domain([-0.5, 24.5]).range([0, width]);
+    const xScale = d3.scaleLinear().domain([-0.5, 13.5]).range([0, width]);
 
     const yScale = d3
       .scaleLinear()
       .domain([0, d3.max(data, (d) => d.activity) + 0.5])
       .range([height, 0]);
 
-    const lineMale = d3
+    const lineNight = d3
       .line()
       .defined((d) => !isNaN(d.activity))
-      .x((d) => xScale(d.hour))
+      .x((d) => xScale(d.day))
       .y((d) => yScale(d.activity));
 
-    const lineFemale = d3
+    const lineDay = d3
       .line()
       .defined((d) => !isNaN(d.activity))
-      .x((d) => xScale(d.hour))
+      .x((d) => xScale(d.day))
       .y((d) => yScale(d.activity));
 
     const chartGroup = svg
@@ -48,36 +50,38 @@ d3.csv("./plots_data/fig5.csv")
 
     chartGroup
       .append("path")
-      .datum(maleData)
-      .attr("d", lineMale)
+      .datum(nightData)
+      .attr("d", lineNight)
       .attr("fill", "none")
       .attr("stroke", "#4e8bc4")
       .attr("stroke-width", 2);
 
     chartGroup
       .append("path")
-      .datum(femaleData)
-      .attr("d", lineFemale)
+      .datum(dayData)
+      .attr("d", lineDay)
       .attr("fill", "none")
       .attr("stroke", "#DA4167")
       .attr("stroke-width", 2);
 
     chartGroup
-      .selectAll("circle.male")
-      .data(maleData)
+      .selectAll("circle.night")
+      .data(nightData)
       .enter()
       .append("circle")
-      .attr("cx", (d) => xScale(d.hour))
+      .attr("cx", (d) => xScale(d.day))
       .attr("cy", (d) => yScale(d.activity))
+      .attr("r", 4)
       .attr("fill", "#4e8bc4");
 
     chartGroup
-      .selectAll("circle.female")
-      .data(femaleData)
+      .selectAll("circle.day")
+      .data(dayData)
       .enter()
       .append("circle")
-      .attr("cx", (d) => xScale(d.hour))
+      .attr("cx", (d) => xScale(d.day))
       .attr("cy", (d) => yScale(d.activity))
+      .attr("r", 4)
       .attr("fill", "#DA4167");
 
     const xAxis = d3.axisBottom(xScale);
@@ -103,7 +107,7 @@ d3.csv("./plots_data/fig5.csv")
       .attr("text-anchor", "middle")
       .style("font-family", "'Roboto', sans-serif")
       .style("font-size", "16px")
-      .text("Hour");
+      .text("Day");
 
     chartGroup
       .append("text")
@@ -122,22 +126,22 @@ d3.csv("./plots_data/fig5.csv")
       .attr("text-anchor", "middle")
       .style("font-family", "'Roboto', sans-serif")
       .style("font-size", "18px")
-      .text("How Do Activity Levels in Mice Vary By Hour?");
+      .text("How Do Activity Levels in Mice Differ During the Day and Night?");
 
     const legend = svg.append("g").attr("transform", "translate(850, 50)");
 
     legend
       .append("circle")
       .attr("cx", -30)
-      .attr("cy", 41)
+      .attr("cy", 225)
       .attr("r", 4)
       .attr("fill", "#4e8bc4");
 
     legend
       .append("text")
       .attr("x", -20)
-      .attr("y", 45)
-      .text("Male")
+      .attr("y", 229)
+      .text("Night")
       .style("font-family", "'Roboto', sans-serif")
       .style("font-size", "14px");
 
@@ -146,15 +150,15 @@ d3.csv("./plots_data/fig5.csv")
     legend2
       .append("circle")
       .attr("cx", -30)
-      .attr("cy", 41)
+      .attr("cy", 225)
       .attr("r", 4)
       .attr("fill", "#DA4167");
 
     legend2
       .append("text")
       .attr("x", -20)
-      .attr("y", 45)
-      .text("Female")
+      .attr("y", 229)
+      .text("Day")
       .style("font-family", "'Roboto', sans-serif")
       .style("font-size", "14px");
 
@@ -163,8 +167,8 @@ d3.csv("./plots_data/fig5.csv")
     legendTitle
       .append("text")
       .attr("x", -50)
-      .attr("y", 5)
-      .text("Mouse Gender")
+      .attr("y", 189)
+      .text("Time")
       .style("font-family", "'Roboto', sans-serif")
       .style("font-size", "15px");
   })

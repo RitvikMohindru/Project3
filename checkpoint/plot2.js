@@ -1,6 +1,6 @@
 import * as d3 from "https://cdn.jsdelivr.net/npm/d3@7.9.0/+esm";
 
-d3.csv("./plots_data/fig2.csv").then((data) => {
+d3.csv("../plots_data/fig2.csv").then((data) => {
   const svg = d3
     .select("#chart2")
     .append("svg")

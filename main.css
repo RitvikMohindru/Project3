@@ -13,6 +13,7 @@ svg {
 h5 {
   font-weight: lighter;
   font-size: 13px;
+  padding-top: 50px;
 }
 
 #plot {
@@ -72,4 +73,23 @@ text {
 .legend {
   font-family: Arial, sans-serif;
   font-size: 12px;
+}
+
+#plot-container {
+  display: flex;
+  justify-content: center;
+  align-items: flex-end;
+  gap: 20px;
+  width: 100%;
+}
+
+#plot {
+  margin-left: 3%;
+  padding: 0;
+}
+
+#small-plot {
+  width: 60%;
+  height: auto;
+  padding-right: 50px;
 }

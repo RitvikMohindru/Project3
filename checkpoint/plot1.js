@@ -1,10 +1,10 @@
 import * as d3 from "https://cdn.jsdelivr.net/npm/d3@7.9.0/+esm";
 
-d3.csv("./plots_data/fig3.csv")
+d3.csv("../plots_data/fig1.csv")
   .then((data) => {
     data.forEach((d) => {
       d.day = parseFloat(d.day);
-      d.activity = parseFloat(d.activity);
+      d.temperature = parseFloat(d.temperature);
     });
 
     const svgWidth = 1000;
@@ -15,32 +15,35 @@ d3.csv("./plots_data/fig3.csv")
     const height = svgHeight - margin.top - margin.bottom;
 
     const svg = d3
-      .select("#chart3")
+      .select("#chart1")
       .append("svg")
       .attr("width", svgWidth)
       .attr("height", svgHeight);
 
-    const maleData = data.filter((d) => d.gender === "male");
-    const femaleData = data.filter((d) => d.gender === "female");
+    const maleData = data.filter((d) => d.gender === "Male");
+    const femaleData = data.filter((d) => d.gender === "Female");
 
-    const xScale = d3.scaleLinear().domain([0.5, 14.5]).range([0, width]);
+    const xScale = d3.scaleLinear().domain([0.5, 13.5]).range([0, width]);
 
     const yScale = d3
       .scaleLinear()
-      .domain([0, d3.max(data, (d) => d.activity) + 0.5])
+      .domain([
+        d3.min(data, (d) => d.temperature) - 0.5,
+        d3.max(data, (d) => d.temperature) + 0.5,
+      ])
       .range([height, 0]);
 
     const lineMale = d3
       .line()
-      .defined((d) => !isNaN(d.activity))
+      .defined((d) => !isNaN(d.temperature))
       .x((d) => xScale(d.day))
-      .y((d) => yScale(d.activity));
+      .y((d) => yScale(d.temperature));
 
     const lineFemale = d3
       .line()
-      .defined((d) => !isNaN(d.activity))
+      .defined((d) => !isNaN(d.temperature))
       .x((d) => xScale(d.day))
-      .y((d) => yScale(d.activity));
+      .y((d) => yScale(d.temperature));
 
     const chartGroup = svg
       .append("g")
@@ -68,7 +71,7 @@ d3.csv("./plots_data/fig3.csv")
       .enter()
       .append("circle")
       .attr("cx", (d) => xScale(d.day))
-      .attr("cy", (d) => yScale(d.activity))
+      .attr("cy", (d) => yScale(d.temperature))
       .attr("r", 4)
       .attr("fill", "#4e8bc4");
 
@@ -78,7 +81,7 @@ d3.csv("./plots_data/fig3.csv")
       .enter()
       .append("circle")
       .attr("cx", (d) => xScale(d.day))
-      .attr("cy", (d) => yScale(d.activity))
+      .attr("cy", (d) => yScale(d.temperature))
       .attr("r", 4)
       .attr("fill", "#DA4167");
 
@@ -115,7 +118,7 @@ d3.csv("./plots_data/fig3.csv")
       .attr("text-anchor", "middle")
       .style("font-family", "'Roboto', sans-serif")
       .style("font-size", "16px")
-      .text("Activity Level");
+      .text("Temperature (˚C)");
 
     svg
       .append("text")
@@ -124,7 +127,9 @@ d3.csv("./plots_data/fig3.csv")
       .attr("text-anchor", "middle")
       .style("font-family", "'Roboto', sans-serif")
       .style("font-size", "18px")
-      .text("How Do Daily Activity Levels Vary Between Male and Female Mice?");
+      .text(
+        "How Do Temperature Trends Differ Between Male and Female Mice Over 14 Days?"
+      );
 
     const legend = svg.append("g").attr("transform", "translate(850, 50)");
 
