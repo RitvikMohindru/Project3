@@ -241,8 +241,12 @@ d3.csv("./plots_data/fig3.csv")
         const x0 = xScale.invert(mouseX - margin.left);
         const closestDay = Math.round(x0);
 
-        const maleActivity = maleData.find((d) => d.day === closestDay)?.activity;
-        const femaleActivity = femaleData.find((d) => d.day === closestDay)?.activity;
+        const maleActivity = maleData.find(
+          (d) => d.day === closestDay
+        )?.activity;
+        const femaleActivity = femaleData.find(
+          (d) => d.day === closestDay
+        )?.activity;
 
         if (maleActivity !== undefined && femaleActivity !== undefined) {
           verticalLine

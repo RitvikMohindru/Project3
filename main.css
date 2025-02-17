@@ -18,3 +18,15 @@ text {
 .legend text {
   font-size: 12px;
 }
+
+#tooltip {
+  position: absolute;
+  background-color: rgba(0, 0, 0, 0.8);
+  color: white;
+  padding: 10px;
+  border-radius: 5px;
+  font-size: 14px;
+  visibility: hidden;
+  pointer-events: none;
+  white-space: nowrap;
+}
