@@ -183,14 +183,17 @@ d3.csv("./plots_data/fig3.csv")
           tooltip
             .style("visibility", "visible")
             .html(
-              `Day: ${closestDay}<br>Male Activity: ${maleActivity.toFixed(2)}<br>Female Activity: ${femaleActivity.toFixed(2)}`
+              `Day: ${closestDay}<br>Male Activity: ${maleActivity.toFixed(
+                2
+              )}<br>Female Activity: ${femaleActivity.toFixed(2)}`
             )
             .style("top", `${event.pageY - 30}px`)
             .style("left", `${event.pageX + 10}px`);
-          
-          chartGroup.selectAll("circle")
-        .filter((d) => d.day === closestDay)
-        .attr("r", 8);
+
+          chartGroup
+            .selectAll("circle")
+            .filter((d) => d.day === closestDay)
+            .attr("r", 8);
         } else {
           verticalLine.style("visibility", "hidden");
           tooltip.style("visibility", "hidden");
@@ -284,13 +287,13 @@ d3.csv("./plots_data/fig3.csv")
     }
 
     const highlightLine = chartGroup
-  .append("line")
-  .attr("stroke", "orange")
-  .attr("stroke-width", 40)
-  .attr("stroke-opacity", 0.2)
-  .attr("y1", 0)
-  .attr("y2", height)
-  .style("visibility", "hidden");
+      .append("line")
+      .attr("stroke", "orange")
+      .attr("stroke-width", 40)
+      .attr("stroke-opacity", 0.2)
+      .attr("y1", 0)
+      .attr("y2", height)
+      .style("visibility", "hidden");
 
     document.getElementById("slider").step = "1";
     const value = document.querySelector("#day-num");
@@ -301,9 +304,9 @@ d3.csv("./plots_data/fig3.csv")
       value.textContent = day;
       updateSmallGraph(day);
       highlightLine
-    .attr("x1", xScale(day))
-    .attr("x2", xScale(day))
-    .style("visibility", "visible");
+        .attr("x1", xScale(day))
+        .attr("x2", xScale(day))
+        .style("visibility", "visible");
     });
 
     updateSmallGraph(1);
@@ -312,75 +315,84 @@ d3.csv("./plots_data/fig3.csv")
     console.error("Error loading the CSV file:", error);
   });
 
-  function updateSmallGraph(day) {
-    const filePath = `./plots_data/day${day}.csv`; // Adjust the path as needed
+function updateSmallGraph(day) {
+  const filePath = `./plots_data/day${day}.csv`; // Adjust the path as needed
 
-      d3.csv(`./plots_data/day${day}.csv`)
-  .then((smallData) => {
-    smallData.forEach((d) => {
-      d.hour = parseFloat(d.hour);
-      d.activity = parseFloat(d.activity);
-    });
-  
+  d3.csv(`./plots_data/day${day}.csv`)
+    .then((smallData) => {
+      smallData.forEach((d) => {
+        d.hour = parseFloat(d.hour);
+        d.activity = parseFloat(d.activity);
+      });
+
       const smallWidth = 500; // Adjust as needed
       const smallHeight = 300;
-      const smallMargin = { top: 50, right: 50, bottom: 50, left: 50 };
+      const smallMargin = { top: 90, right: 50, bottom: 50, left: 50 };
       const innerWidth = smallWidth - smallMargin.left - smallMargin.right;
       const innerHeight = smallHeight - smallMargin.top - smallMargin.bottom;
-  
-      const xSmallScale = d3.scaleLinear()
+
+      const xSmallScale = d3
+        .scaleLinear()
         .domain([1, 24])
         .range([0, innerWidth]);
-  
-      const ySmallScale = d3.scaleLinear()
+
+      const ySmallScale = d3
+        .scaleLinear()
         .domain([0, 60])
         .range([innerHeight, 0]);
-  
+
       // Define line function
-      const lineSmall = d3.line()
+      const lineSmall = d3
+        .line()
         .x((d) => xSmallScale(d.hour))
         .y((d) => ySmallScale(d.activity));
 
       // Clear previous graph
       d3.select("#small-plot-svg svg").remove();
-  
+
       // Create new SVG
-      const smallSvg = d3.select("#small-plot-svg")
+      const smallSvg = d3
+        .select("#small-plot-svg")
         .append("svg")
         .attr("width", "100%")
         .attr("height", "100%")
         .attr("viewBox", `0 0 ${smallWidth} ${smallHeight}`)
         .attr("preserveAspectRatio", "xMidYMid meet");
 
-        smallSvg
-      .append("text")
-      .attr("x", smallWidth / 2)
-      .attr("y", 10)
-      .attr("text-anchor", "middle")
-      .style("font-family", "'Merriweather'")
-      .style("font-size", "18px")
-      .style("font-weight", "bolder")
-      .text("Hourly Activity Levels for Male and Female Mice");
+      smallSvg
+        .append("text")
+        .attr("x", smallWidth / 2)
+        .attr("y", smallHeight - 270)
+        .attr("text-anchor", "middle")
+        .style("font-family", "'Merriweather'")
+        .style("font-size", "18px")
+        .style("font-weight", "bolder")
+        .text("Hourly Activity Levels for Male and Female Mice");
 
       smallSvg
-  .append("text")
-  .attr("x", smallWidth / 2)
-  .attr("y", 30) // Adjust the y position for the second line
-  .attr("text-anchor", "middle")
-  .style("font-family", "'Merriweather'")
-  .style("font-size", "18px")
-  .style("font-weight", "bolder")
-  .text("on Day " + day);
-  
-      const smallChartGroup = smallSvg.append("g")
-        .attr("transform", `translate(${smallMargin.left}, ${smallMargin.top})`);
-  
-        // Filter data for male and female
+        .append("text")
+        .attr("x", smallWidth / 2)
+        .attr("y", smallHeight - 250) // Adjust the y position for the second line
+        .attr("text-anchor", "middle")
+        .style("font-family", "'Merriweather'")
+        .style("font-size", "18px")
+        .style("font-weight", "bolder")
+        .text("on Day " + day);
+
+      const smallChartGroup = smallSvg
+        .append("g")
+        .attr(
+          "transform",
+          `translate(${smallMargin.left}, ${smallMargin.top})`
+        );
+
+      // Filter data for male and female
       const maleSmallData = smallData.filter((d) => d.gender === "male");
       const femaleSmallData = smallData.filter((d) => d.gender === "female");
-      
+
       // Append male line
-      smallChartGroup.append("path")
+      smallChartGroup
+        .append("path")
         .datum(maleSmallData)
         .attr("fill", "none")
         .attr("stroke", "#4e8bc4")
@@ -388,121 +400,134 @@ d3.csv("./plots_data/fig3.csv")
         .attr("d", lineSmall);
 
       // Append female line
-      smallChartGroup.append("path")
+      smallChartGroup
+        .append("path")
         .datum(femaleSmallData)
         .attr("fill", "none")
         .attr("stroke", "#DA4167")
         .attr("stroke-width", 2)
         .attr("d", lineSmall);
-  
+
       // Add axes
       const xAxisSmall = d3.axisBottom(xSmallScale).ticks(12);
       const yAxisSmall = d3.axisLeft(ySmallScale).ticks(5);
-  
-      smallChartGroup.append("g")
+
+      smallChartGroup
+        .append("g")
         .attr("transform", `translate(0, ${innerHeight})`)
         .call(xAxisSmall);
-  
+
       smallChartGroup.append("g").call(yAxisSmall);
 
       const smallTooltip = d3
-      .select("body")
-      .append("div")
-      .style("position", "absolute")
-      .style("background", "rgba(0, 0, 0, 0.8)")
-      .style("color", "#fff")
-      .style("padding", "8px")
-      .style("border-radius", "5px")
-      .style("font-size", "12px")
-      .style("visibility", "hidden");
+        .select("body")
+        .append("div")
+        .style("position", "absolute")
+        .style("background", "rgba(0, 0, 0, 0.8)")
+        .style("color", "#fff")
+        .style("padding", "8px")
+        .style("border-radius", "5px")
+        .style("font-size", "12px")
+        .style("visibility", "hidden");
 
       const smallVerticalLine = smallChartGroup
-      .append("line")
-      .attr("stroke", "#5B5B5B")
-      .attr("stroke-width", 1.5)
-      .attr("stroke-dasharray", "5 10")
-      .attr("y1", 0)
-      .attr("y2", 200)
-      .style("visibility", "hidden")
-      .style("pointer-events", "none");
+        .append("line")
+        .attr("stroke", "#5B5B5B")
+        .attr("stroke-width", 1.5)
+        .attr("stroke-dasharray", "5 10")
+        .attr("y1", 0)
+        .attr("y2", 200)
+        .style("visibility", "hidden")
+        .style("pointer-events", "none");
 
-      smallSvg.append("rect")
-      .attr("width", smallWidth) // Ensure it covers the full width
-      .attr("height", smallHeight) // Ensure it covers the full height
-      .style("fill", "none")
-      .style("pointer-events", "all")
-      .on("mousemove", (event) => {
-        const [mouseX] = d3.pointer(event, smallSvg.node());
-        let closestHour = Math.round(xSmallScale.invert(mouseX - smallMargin.left));
-        closestHour = Math.max(1, Math.min(24, closestHour));
+      smallSvg
+        .append("rect")
+        .attr("width", smallWidth) // Ensure it covers the full width
+        .attr("height", smallHeight) // Ensure it covers the full height
+        .style("fill", "none")
+        .style("pointer-events", "all")
+        .on("mousemove", (event) => {
+          const [mouseX] = d3.pointer(event, smallSvg.node());
+          let closestHour = Math.round(
+            xSmallScale.invert(mouseX - smallMargin.left)
+          );
+          closestHour = Math.max(1, Math.min(24, closestHour));
 
-        const maleSmallActivity = maleSmallData.find(
-          (d) => d.hour === closestHour
-        )?.activity;
-        const femaleSmallActivity = femaleSmallData.find(
-          (d) => d.hour === closestHour
-        )?.activity;
+          const maleSmallActivity = maleSmallData.find(
+            (d) => d.hour === closestHour
+          )?.activity;
+          const femaleSmallActivity = femaleSmallData.find(
+            (d) => d.hour === closestHour
+          )?.activity;
 
-        smallChartGroup.selectAll("circle").attr("r", 3);
+          smallChartGroup.selectAll("circle").attr("r", 3);
 
-        if (maleSmallActivity !== undefined && femaleSmallActivity !== undefined) {
-          smallVerticalLine
-            .attr("x1", xSmallScale(closestHour))
-            .attr("x2", xSmallScale(closestHour))
-            .style("visibility", "visible");
+          if (
+            maleSmallActivity !== undefined &&
+            femaleSmallActivity !== undefined
+          ) {
+            smallVerticalLine
+              .attr("x1", xSmallScale(closestHour))
+              .attr("x2", xSmallScale(closestHour))
+              .style("visibility", "visible");
 
-          smallTooltip
-            .style("visibility", "visible")
-            .html(
-              `Hour: ${closestHour}<br>Male Activity: ${maleSmallActivity.toFixed(2)}<br>Female Activity: ${femaleSmallActivity.toFixed(2)}`
-            )
-            .style("top", `${event.pageY - 30}px`)
-            .style("left", `${event.pageX + 10}px`);
-          
-            smallChartGroup.selectAll("circle")
-        .filter((d) => d.hour === closestHour)
-        .attr("r", 6);
-        }  else {
+            smallTooltip
+              .style("visibility", "visible")
+              .html(
+                `Hour: ${closestHour}<br>Male Activity: ${maleSmallActivity.toFixed(
+                  2
+                )}<br>Female Activity: ${femaleSmallActivity.toFixed(2)}`
+              )
+              .style("top", `${event.pageY - 30}px`)
+              .style("left", `${event.pageX + 10}px`);
+
+            smallChartGroup
+              .selectAll("circle")
+              .filter((d) => d.hour === closestHour)
+              .attr("r", 6);
+          } else {
+            smallVerticalLine.style("visibility", "hidden");
+            smallTooltip.style("visibility", "hidden");
+          }
+        })
+        .on("mouseout", () => {
           smallVerticalLine.style("visibility", "hidden");
           smallTooltip.style("visibility", "hidden");
-        }
-      })
-      .on("mouseout", () => {
-        smallVerticalLine.style("visibility", "hidden");
-        smallTooltip.style("visibility", "hidden");
-        smallChartGroup.selectAll("circle").attr("r", 3);
-      });
+          smallChartGroup.selectAll("circle").attr("r", 3);
+        });
 
       smallChartGroup
-      .selectAll("circle.male")
-      .data(maleSmallData)
-      .enter()
-      .append("circle")
-      .attr("cx", (d) => xSmallScale(d.hour))
-      .attr("cy", (d) => ySmallScale(d.activity))
-      .attr("r", 3)
-      .attr("fill", "#4e8bc4");
+        .selectAll("circle.male")
+        .data(maleSmallData)
+        .enter()
+        .append("circle")
+        .attr("cx", (d) => xSmallScale(d.hour))
+        .attr("cy", (d) => ySmallScale(d.activity))
+        .attr("r", 3)
+        .attr("fill", "#4e8bc4");
 
       smallChartGroup
-      .selectAll("circle.female")
-      .data(femaleSmallData)
-      .enter()
-      .append("circle")
-      .attr("cx", (d) => xSmallScale(d.hour))
-      .attr("cy", (d) => ySmallScale(d.activity))
-      .attr("r", 3)
-      .attr("fill", "#DA4167");
-  
+        .selectAll("circle.female")
+        .data(femaleSmallData)
+        .enter()
+        .append("circle")
+        .attr("cx", (d) => xSmallScale(d.hour))
+        .attr("cy", (d) => ySmallScale(d.activity))
+        .attr("r", 3)
+        .attr("fill", "#DA4167");
+
       // Axis labels
-      smallChartGroup.append("text")
+      smallChartGroup
+        .append("text")
         .attr("x", innerWidth / 2)
         .attr("y", innerHeight + 40)
         .attr("text-anchor", "middle")
         .style("font-family", "'Merriweather'")
         .style("font-size", "14px")
         .text("Hour");
-  
-      smallChartGroup.append("text")
+
+      smallChartGroup
+        .append("text")
         .attr("transform", "rotate(-90)")
         .attr("x", -innerHeight / 2)
         .attr("y", -40)
@@ -512,10 +537,15 @@ d3.csv("./plots_data/fig3.csv")
         .text("Activity Level");
 
       // Add legend
-      const legend = smallSvg.append("g")
-        .attr("transform", `translate(${smallWidth - 100}, ${smallMargin.top})`);
+      const legend = smallSvg
+        .append("g")
+        .attr(
+          "transform",
+          `translate(${smallWidth - 100}, ${smallMargin.top})`
+        );
 
-      legend.append("text")
+      legend
+        .append("text")
         .attr("x", 5)
         .attr("y", 3)
         .style("font-family", "'Merriweather'")
@@ -523,26 +553,30 @@ d3.csv("./plots_data/fig3.csv")
         .style("font-weight", "bold")
         .text("Mouse Gender");
 
-      legend.append("circle")
+      legend
+        .append("circle")
         .attr("cx", 30)
         .attr("cy", 15)
         .attr("r", 5)
         .attr("fill", "#4e8bc4");
 
-      legend.append("text")
+      legend
+        .append("text")
         .attr("x", 40)
         .attr("y", 20)
         .style("font-family", "'Merriweather'")
         .style("font-size", "12px")
         .text("Male");
 
-      legend.append("circle")
+      legend
+        .append("circle")
         .attr("cx", 30)
         .attr("cy", 33)
         .attr("r", 5)
         .attr("fill", "#DA4167");
 
-        legend.append("text")
+      legend
+        .append("text")
         .attr("x", 40)
         .attr("y", 38)
         .style("font-family", "'Merriweather'")
@@ -550,5 +584,4 @@ d3.csv("./plots_data/fig3.csv")
         .text("Female");
     })
     .catch((error) => console.error(`Error loading ${filePath}:`, error));
-  }
-  
+}
