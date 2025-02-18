@@ -22,14 +22,6 @@ d3.csv("./plots_data/fig3.csv")
       .attr("viewBox", `0 0 ${svgWidth} ${svgHeight}`)
       .attr("preserveAspectRatio", "xMidYMid meet");
 
-    let smallSvg = d3
-      .select("#small-plot-svg")
-      .append("svg")
-      .attr("width", "100%")
-      .attr("height", "100%")
-      .attr("viewBox", `0 0 ${svgWidth} ${svgHeight}`)
-      .attr("preserveAspectRatio", "xMidYMid meet");
-
     const maleData = data.filter((d) => d.gender === "male");
     const femaleData = data.filter((d) => d.gender === "female");
 
@@ -255,11 +247,11 @@ d3.csv("./plots_data/fig3.csv")
     const legend3 = svg.append("g").attr("transform", "translate(1020, 185)");
 
     legend3
-    .append("rect") // Change from circle to rect
-    .attr("x", -35) // Adjust position (cx - r)
-    .attr("y", 36)  // Adjust position (cy - r)
-    .attr("width", 10) // Make it square (2 * r)
-    .attr("height", 10) // Make it square (2 * r)
+      .append("rect") // Change from circle to rect
+      .attr("x", -35) // Adjust position (cx - r)
+      .attr("y", 36) // Adjust position (cy - r)
+      .attr("width", 10) // Make it square (2 * r)
+      .attr("height", 10) // Make it square (2 * r)
       .attr("fill", "orange")
       .attr("opacity", 0.5);
 
@@ -274,11 +266,11 @@ d3.csv("./plots_data/fig3.csv")
     const legend4 = svg.append("g").attr("transform", "translate(1020, 210)");
 
     legend4
-    .append("rect") // Change from circle to rect
-    .attr("x", -35) // Adjust position (cx - r)
-    .attr("y", 36)  // Adjust position (cy - r)
-    .attr("width", 10) // Make it square (2 * r)
-    .attr("height", 10) // Make it square (2 * r)
+      .append("rect") // Change from circle to rect
+      .attr("x", -35) // Adjust position (cx - r)
+      .attr("y", 36) // Adjust position (cy - r)
+      .attr("width", 10) // Make it square (2 * r)
+      .attr("height", 10) // Make it square (2 * r)
       .attr("fill", "red")
       .attr("opacity", 0.4);
 
@@ -359,7 +351,10 @@ d3.csv("./plots_data/fig3.csv")
       highlightLine
         .attr("x1", xScale(day))
         .attr("x2", xScale(day))
-        .attr("stroke", [2, 6, 10, 14].includes(parseInt(day)) ? "red" : "orange")
+        .attr(
+          "stroke",
+          [2, 6, 10, 14].includes(parseInt(day)) ? "red" : "orange"
+        )
         .style("visibility", "visible");
     });
 
@@ -490,7 +485,7 @@ function updateSmallGraph(day) {
         .attr("stroke-width", 1.5)
         .attr("stroke-dasharray", "5 10")
         .attr("y1", 0)
-        .attr("y2", 200)
+        .attr("y2", 165)
         .style("visibility", "hidden")
         .style("pointer-events", "none");
 
