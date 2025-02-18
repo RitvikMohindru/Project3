@@ -252,6 +252,57 @@ d3.csv("./plots_data/fig3.csv")
       .style("font-family", "'Merriweather'")
       .style("font-size", "18px");
 
+    const legend3 = svg.append("g").attr("transform", "translate(1020, 185)");
+
+    legend3
+    .append("rect") // Change from circle to rect
+    .attr("x", -35) // Adjust position (cx - r)
+    .attr("y", 36)  // Adjust position (cy - r)
+    .attr("width", 10) // Make it square (2 * r)
+    .attr("height", 10) // Make it square (2 * r)
+      .attr("fill", "orange")
+      .attr("opacity", 0.5);
+
+    legend3
+      .append("text")
+      .attr("x", -20)
+      .attr("y", 45)
+      .text("Yes")
+      .style("font-family", "'Merriweather'")
+      .style("font-size", "17px");
+
+    const legend4 = svg.append("g").attr("transform", "translate(1020, 210)");
+
+    legend4
+    .append("rect") // Change from circle to rect
+    .attr("x", -35) // Adjust position (cx - r)
+    .attr("y", 36)  // Adjust position (cy - r)
+    .attr("width", 10) // Make it square (2 * r)
+    .attr("height", 10) // Make it square (2 * r)
+      .attr("fill", "red")
+      .attr("opacity", 0.4);
+
+    legend4
+      .append("text")
+      .attr("x", -20)
+      .attr("y", 45)
+      .text("No")
+      .style("font-family", "'Merriweather'")
+      .style("font-size", "17px");
+
+    const legendTitle2 = svg
+      .append("g")
+      .attr("transform", "translate(1010, 200)");
+
+    legendTitle2
+      .append("text")
+      .attr("x", -50)
+      .attr("y", 5)
+      .text("Estrus")
+      .style("font-weight", "bold")
+      .style("font-family", "'Merriweather'")
+      .style("font-size", "18px");
+
     addCircles(maleData, "male", "#4e8bc4");
     addCircles(femaleData, "female", "#DA4167");
 
@@ -293,7 +344,9 @@ d3.csv("./plots_data/fig3.csv")
       .attr("stroke-opacity", 0.2)
       .attr("y1", 0)
       .attr("y2", height)
-      .style("visibility", "hidden");
+      .attr("x1", xScale(1))
+      .attr("x2", xScale(1))
+      .style("visibility", "visible");
 
     document.getElementById("slider").step = "1";
     const value = document.querySelector("#day-num");
@@ -306,6 +359,7 @@ d3.csv("./plots_data/fig3.csv")
       highlightLine
         .attr("x1", xScale(day))
         .attr("x2", xScale(day))
+        .attr("stroke", [2, 6, 10, 14].includes(parseInt(day)) ? "red" : "orange")
         .style("visibility", "visible");
     });
 
