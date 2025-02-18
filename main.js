@@ -333,7 +333,7 @@ function updateSmallGraph(day) {
 
       const xSmallScale = d3
         .scaleLinear()
-        .domain([1, 24])
+        .domain([0.5, 24.5])
         .range([0, innerWidth]);
 
       const ySmallScale = d3
