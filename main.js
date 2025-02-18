@@ -464,9 +464,15 @@ function updateSmallGraph(day) {
       smallChartGroup
         .append("g")
         .attr("transform", `translate(0, ${innerHeight})`)
-        .call(xAxisSmall);
+        .call(xAxisSmall)
+        .selectAll("text")
+        .style("font-family", "'Merriweather'");
 
-      smallChartGroup.append("g").call(yAxisSmall);
+      smallChartGroup
+        .append("g")
+        .call(yAxisSmall)
+        .selectAll("text")
+        .style("font-family", "'Merriweather'");
 
       const smallTooltip = d3
         .select("body")
