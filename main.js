@@ -283,6 +283,15 @@ d3.csv("./plots_data/fig3.csv")
         });
     }
 
+    const highlightLine = chartGroup
+  .append("line")
+  .attr("stroke", "orange")
+  .attr("stroke-width", 40)
+  .attr("stroke-opacity", 0.2)
+  .attr("y1", 0)
+  .attr("y2", height)
+  .style("visibility", "hidden");
+
     document.getElementById("slider").step = "1";
     const value = document.querySelector("#day-num");
     const input = document.querySelector("#slider");
@@ -291,6 +300,10 @@ d3.csv("./plots_data/fig3.csv")
       const day = event.target.value;
       value.textContent = day;
       updateSmallGraph(day);
+      highlightLine
+    .attr("x1", xScale(day))
+    .attr("x2", xScale(day))
+    .style("visibility", "visible");
     });
 
     updateSmallGraph(1);
