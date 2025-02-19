@@ -612,7 +612,7 @@ function updateSmallGraph(day) {
         .append("circle")
         .attr("cx", 30)
         .attr("cy", 15)
-        .attr("r", 5)
+        .attr("r", 4)
         .attr("fill", "#4e8bc4");
 
       legend
@@ -627,7 +627,7 @@ function updateSmallGraph(day) {
         .append("circle")
         .attr("cx", 30)
         .attr("cy", 33)
-        .attr("r", 5)
+        .attr("r", 4)
         .attr("fill", "#DA4167");
 
       legend
