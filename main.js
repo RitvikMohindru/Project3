@@ -20,7 +20,8 @@ d3.csv("./plots_data/fig3.csv")
       .attr("width", "100%")
       .attr("height", "100%")
       .attr("viewBox", `0 0 ${svgWidth} ${svgHeight}`)
-      .attr("preserveAspectRatio", "xMidYMid meet");
+      .attr("preserveAspectRatio", "xMidYMid meet")
+      .attr("transform", "translate(0, -80)");
 
     const maleData = data.filter((d) => d.gender === "male");
     const femaleData = data.filter((d) => d.gender === "female");
@@ -326,8 +327,13 @@ d3.csv("./plots_data/fig3.csv")
         })
         .on("mouseout", () => {
           tooltip.style("visibility", "hidden");
+          chartGroup.selectAll("circle").attr("r", 5);
         });
     }
+
+    svg.on("mouseleave", () => {
+      chartGroup.selectAll("circle").attr("r", 5); // Reset the size of all dots
+    });
 
     const highlightLine = chartGroup
       .append("line")
@@ -647,10 +653,11 @@ const description = d3
   .attr("width", "100%")
   .attr("height", "100%")
   .attr("viewBox", `0 0 28 29`)
-  .attr("preserveAspectRatio", "xMidYMid meet");
+  .attr("preserveAspectRatio", "xMidYMid meet")
+  .attr("transform", "translate(0, 100)");
 
 const textContent =
-  "The visualizations use line charts to compare the activity levels of male (blue) and female (pink) mice. Days of estrus are highlighted in pink to indicate when female mice are in this phase, while regular days are highlighted in orange. A smaller subplot provides a detailed view of hourly activity levels for each day. The main plot shows daily activity trends by averaging the data for male and female mice each day. The smaller subplot breaks it down further, showing hourly activity patterns for each gender.";
+  "The visualizations use line charts to compare the activity levels of male (blue) and female (pink) mice. Days of estrus are highlighted in pink to indicate when female mice are in this phase, while regular days are highlighted in orange. The main plot shows daily activity trends by averaging the data for male and female mice each day. The smaller subplot breaks it down further, showing hourly activity patterns for each gender.";
 
 const wrapText = (text, width) => {
   const words = text.split(" ");
@@ -673,7 +680,15 @@ const wrapText = (text, width) => {
 
 const lines = wrapText(textContent, 75);
 
-let yPosition = 3.2;
+// Calculate the total height of the text
+const lineHeight = 3.9; // Adjust as needed
+const totalTextHeight = lines.length * lineHeight;
+
+// Calculate the starting y position to center the text vertically
+const boxHeight = 29; // Height of the viewBox
+const startY = (boxHeight - totalTextHeight) / 2 + lineHeight / 2;
+
+let yPosition = startY;
 lines.forEach((line) => {
   description
     .append("text")
@@ -684,5 +699,5 @@ lines.forEach((line) => {
     .style("font-size", "2px")
     .text(line);
 
-  yPosition += 3.9;
+  yPosition += lineHeight;
 });
