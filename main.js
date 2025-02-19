@@ -657,7 +657,7 @@ const description = d3
   .attr("transform", "translate(0, 100)");
 
 const textContent =
-  "The visualizations use line charts to compare the activity levels of male (blue) and female (pink) mice. Days of estrus are highlighted in pink to indicate when female mice are in this phase, while regular days are highlighted in orange. The main plot shows daily activity trends by averaging the data for male and female mice each day. The smaller subplot breaks it down further, showing hourly activity patterns for each gender.";
+  "The visualizations use line charts to compare the activity levels of male (blue) and female (red) mice. Days of estrus are highlighted in light red to indicate when female mice are in this phase, while regular days are highlighted in orange. The main plot shows daily activity trends by averaging the data for male and female mice each day. The smaller subplot breaks it down further, showing hourly activity patterns for each gender.";
 
 const wrapText = (text, width) => {
   const words = text.split(" ");
