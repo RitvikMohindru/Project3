@@ -237,7 +237,7 @@ d3.csv("./plots_data/fig3.csv")
 
     legendTitle
       .append("text")
-      .attr("x", -50)
+      .attr("x", -40)
       .attr("y", 5)
       .text("Mouse Gender")
       .style("font-weight", "bold")
@@ -248,16 +248,16 @@ d3.csv("./plots_data/fig3.csv")
 
     legend3
       .append("rect") // Change from circle to rect
-      .attr("x", -35) // Adjust position (cx - r)
+      .attr("x", -45) // Adjust position (cx - r)
       .attr("y", 36) // Adjust position (cy - r)
-      .attr("width", 10) // Make it square (2 * r)
+      .attr("width", 25) // Make it square (2 * r)
       .attr("height", 10) // Make it square (2 * r)
       .attr("fill", "orange")
       .attr("opacity", 0.5);
 
     legend3
       .append("text")
-      .attr("x", -20)
+      .attr("x", -10)
       .attr("y", 45)
       .text("Yes")
       .style("font-family", "'Merriweather'")
@@ -267,16 +267,16 @@ d3.csv("./plots_data/fig3.csv")
 
     legend4
       .append("rect") // Change from circle to rect
-      .attr("x", -35) // Adjust position (cx - r)
+      .attr("x", -45) // Adjust position (cx - r)
       .attr("y", 36) // Adjust position (cy - r)
-      .attr("width", 10) // Make it square (2 * r)
+      .attr("width", 25) // Make it square (2 * r)
       .attr("height", 10) // Make it square (2 * r)
       .attr("fill", "red")
       .attr("opacity", 0.4);
 
     legend4
       .append("text")
-      .attr("x", -20)
+      .attr("x", -10)
       .attr("y", 45)
       .text("No")
       .style("font-family", "'Merriweather'")
@@ -288,7 +288,7 @@ d3.csv("./plots_data/fig3.csv")
 
     legendTitle2
       .append("text")
-      .attr("x", -50)
+      .attr("x", -40)
       .attr("y", 5)
       .text("Estrus")
       .style("font-weight", "bold")
@@ -416,12 +416,12 @@ function updateSmallGraph(day) {
         .style("font-family", "'Merriweather'")
         .style("font-size", "18px")
         .style("font-weight", "bolder")
-        .text("Hourly Activity Levels for Male and Female Mice");
+        .text("Hourly Activity Levels of Male and Female Mice");
 
       smallSvg
         .append("text")
         .attr("x", smallWidth / 2)
-        .attr("y", smallHeight - 250) // Adjust the y position for the second line
+        .attr("y", smallHeight - 242)
         .attr("text-anchor", "middle")
         .style("font-family", "'Merriweather'")
         .style("font-size", "18px")
@@ -640,3 +640,49 @@ function updateSmallGraph(day) {
     })
     .catch((error) => console.error(`Error loading ${filePath}:`, error));
 }
+
+const description = d3
+  .select("#description-box")
+  .append("svg")
+  .attr("width", "100%")
+  .attr("height", "100%")
+  .attr("viewBox", `0 0 28 29`)
+  .attr("preserveAspectRatio", "xMidYMid meet");
+
+const textContent =
+  "The visualizations use line charts to compare the activity levels of male (blue) and female (pink) mice. Days of estrus are highlighted in light pink to indicate when female mice are in this phase, while regular days are highlighted in light orange. A smaller subplot provides a detailed view of hourly activity levels for each day. The interactive slider allows users to explore and analyze data from the other days. The main plot shows daily activity trends by averaging the data for male and female mice each day. The smaller subplot breaks it down further, showing hourly activity patterns for each gender.";
+
+const wrapText = (text, width) => {
+  const words = text.split(" ");
+  const lines = [];
+  let currentLine = "";
+
+  words.forEach((word) => {
+    const testLine = currentLine ? currentLine + " " + word : word;
+    if (testLine.length <= width) {
+      currentLine = testLine;
+    } else {
+      lines.push(currentLine);
+      currentLine = word;
+    }
+  });
+
+  lines.push(currentLine);
+  return lines;
+};
+
+const lines = wrapText(textContent, 90);
+
+let yPosition = 3.2;
+lines.forEach((line) => {
+  description
+    .append("text")
+    .attr("x", 14)
+    .attr("y", yPosition)
+    .attr("text-anchor", "middle")
+    .style("font-family", "'Merriweather'")
+    .style("font-size", "2px")
+    .text(line);
+
+  yPosition += 3.9;
+});
