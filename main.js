@@ -21,7 +21,7 @@ d3.csv("./plots_data/fig3.csv")
       .attr("height", "100%")
       .attr("viewBox", `0 0 ${svgWidth} ${svgHeight}`)
       .attr("preserveAspectRatio", "xMidYMid meet")
-      .attr("transform", "translate(0, -80)");
+      .attr("transform", "translate(0, -30)");
 
     const maleData = data.filter((d) => d.gender === "male");
     const femaleData = data.filter((d) => d.gender === "female");
