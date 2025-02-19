@@ -252,7 +252,7 @@ d3.csv("./plots_data/fig3.csv")
       .attr("y", 36) // Adjust position (cy - r)
       .attr("width", 25) // Make it square (2 * r)
       .attr("height", 10) // Make it square (2 * r)
-      .attr("fill", "orange")
+      .attr("fill", "red")
       .attr("opacity", 0.5);
 
     legend3
@@ -271,7 +271,7 @@ d3.csv("./plots_data/fig3.csv")
       .attr("y", 36) // Adjust position (cy - r)
       .attr("width", 25) // Make it square (2 * r)
       .attr("height", 10) // Make it square (2 * r)
-      .attr("fill", "red")
+      .attr("fill", "orange")
       .attr("opacity", 0.4);
 
     legend4
