@@ -164,7 +164,7 @@ d3.csv("./plots_data/fig3.csv")
           (d) => d.day === closestDay
         )?.activity;
 
-        chartGroup.selectAll("circle").attr("r", 4);
+        chartGroup.selectAll("circle").attr("r", 5);
 
         if (maleActivity !== undefined && femaleActivity !== undefined) {
           verticalLine
@@ -189,7 +189,7 @@ d3.csv("./plots_data/fig3.csv")
         } else {
           verticalLine.style("visibility", "hidden");
           tooltip.style("visibility", "hidden");
-          chartGroup.selectAll("circle").attr("r", 4);
+          chartGroup.selectAll("circle").attr("r", 5);
         }
       })
       .on("mouseout", () => {
@@ -650,7 +650,7 @@ const description = d3
   .attr("preserveAspectRatio", "xMidYMid meet");
 
 const textContent =
-  "The visualizations use line charts to compare the activity levels of male (blue) and female (pink) mice. Days of estrus are highlighted in light pink to indicate when female mice are in this phase, while regular days are highlighted in light orange. A smaller subplot provides a detailed view of hourly activity levels for each day. The interactive slider allows users to explore and analyze data from the other days. The main plot shows daily activity trends by averaging the data for male and female mice each day. The smaller subplot breaks it down further, showing hourly activity patterns for each gender.";
+  "The visualizations use line charts to compare the activity levels of male (blue) and female (pink) mice. Days of estrus are highlighted in pink to indicate when female mice are in this phase, while regular days are highlighted in orange. A smaller subplot provides a detailed view of hourly activity levels for each day. The main plot shows daily activity trends by averaging the data for male and female mice each day. The smaller subplot breaks it down further, showing hourly activity patterns for each gender.";
 
 const wrapText = (text, width) => {
   const words = text.split(" ");
@@ -671,7 +671,7 @@ const wrapText = (text, width) => {
   return lines;
 };
 
-const lines = wrapText(textContent, 90);
+const lines = wrapText(textContent, 75);
 
 let yPosition = 3.2;
 lines.forEach((line) => {
