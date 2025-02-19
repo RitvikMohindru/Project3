@@ -13,12 +13,12 @@ svg {
 
 h5 {
   font-weight: lighter;
-  font-size: 13px;
-  padding-top: 20px;
+  font-size: 15px;
 }
 
 h2 {
   text-align: center;
+  padding-bottom: 25px;
 }
 
 #plot {
