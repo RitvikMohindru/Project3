@@ -26,5 +26,96 @@
     <footer>
       <h5>By: Ritvik Mohindru, Brooklyn Pagaza, Sai Sri Lasya Yadlapati</h5>
     </footer>
+    <div id="writeup-title">WRITEUP</div>
+    <div id="writeup">
+      The interactive visualization we made answers the following question:
+      <em
+        >How do daily and hourly activity levels vary by male and female
+        mice?</em
+      >
+      Understanding gender differences in mouse activity will help us learn how
+      hormones and biological factors shape behavior, which is critical for
+      research on health and treatments. This exploration helps answer how
+      hormones and gender can affect behavior and how mice can be used to study
+      human health conditions.
+      <br /><br />
+      Our visualization compares the activity levels of male and female mice,
+      illustrating both the daily and hourly fluctuations. It also highlights
+      the estrus periods during the 14 days, in order to explore how
+      reproductive cycles or hormonal changes can influence activity levels of
+      female mice.
+      <br /><br />
+      The visualization we made is two-part: it includes a main, bigger plot
+      that illustrates the daily trends of activity levels of male and female
+      mice, and the smaller plot to the bottom right that illustrates the hourly
+      activity level fluctuations of male and female mice. There is a slider
+      below the smaller plot that allows the viewer to interact with the
+      visualization and control the day they wish to observe. The data we used
+      to create this visualization came from the provided mouse dataset. In
+      order to generate the data values used in the big and small line plots, we
+      wrangled the data by averaging the activity levels for male and female
+      mice per day and per hour.
+      <br /><br />
+      Our interactive visualization uses numerous visual encoding techniques to
+      present the data in a clear, evocative, and effective way. The first set
+      of interactive features we incorporated were regarding hovering over the
+      line plots. Hovering over any given day/hour will result in the points for
+      the corresponding day/hour being larger in size, a dashed line going
+      through the points marking the day/hour, and a tooltip that would display
+      the day/hour and its specific corresponding male and female activity
+      levels next to the cursor. The reasoning behind these visual encodings is
+      simple: the larger points would make it clear which points the
+      viewer&apos;s cursor is currently over, the dashed line makes it clear the
+      corresponding day/hour, and the tooltip gives the specific values for male
+      and female activity levels for the viewers use. In addition to hovering,
+      another interactive element we incorporated was a slider element below the
+      smaller plot, which would show the hourly activity levels for mice.
+      Adjusting the slider would adjust the day for which the graph would be
+      shown for. This would also adjust the corresponding highlight on the
+      larger graph, which shows what day is being looked at. The highlight is
+      red for days of estrus and yellow for days without estrus. The reason
+      these colors were chosen is because red represents something
+      characteristic of a female, as estrus is, while yellow-orange would do
+      well as a mild color to represent a normal day. Likewise, the colors
+      chosen for the graph were blue and pink to intuitively represent the male
+      and female genders. Furthermore, because the line graphs are set on the
+      same scale and represent “Activity Level,” it employs a position on a
+      common scale visual channel. This makes the visualization expressive and
+      allows the viewer to quickly compare the activity levels between males and
+      females, on both the plots. Lastly, the interactive slider enables the
+      viewer to obtain more data and information regarding the question, as
+      it&apos;s aggregated by the hour, instead of by each day.
+      <br /><br />
+      Some alternatives we considered include a scatter plot instead of a line
+      plot, and using raw data instead of aggregating it by hour or by day. We
+      eliminated these ideas because they would be too overwhelming for the
+      viewer to digest too much data at once. We chose to do a two-plot layout
+      so that viewers can visualize both the daily average activity levels and
+      also the hourly fluctuations side-by-side. We chose line plots because
+      they make it easy to track and compare how activity levels change over
+      time for both male and female mice. Daily and hourly views can provide a
+      more complete picture — daily shows the overall trends and while hourly
+      captures the smaller fluctuations, like their nocturnal activity.
+      <br /><br />
+      Through these interactive elements, the viewer should be able to explore
+      and notice interesting patterns. For example, through the red highlight
+      marking days of estrus, we can notice that females have a spike in
+      activity levels, and relatively higher activity levels compared to male
+      mice. Moreover, the hourly activity levels as depicted in the small
+      interactive slider plot illustrates how mice are more active during early
+      hours of the day because they are nocturnal.
+      <br /><br />
+      The work was distributed evenly within the group in the completion of this
+      project. For the checkpoint, we gathered ideas and collectively generated
+      5 plots before settling on the best idea to make an interactive
+      visualization with. Afterwards, we collectively brainstormed for 20
+      minutes to decide the interactive element to incorporate into our
+      visualization. We then worked on each part – main code, styling, and write
+      up – together. One person was in charge of each section, but we would
+      collectively work on it and offer help and inputs. This project roughly
+      took 18 hours combined, and the aspect that took the most time was the
+      coding in D3. We would consult ChatGPT and Copilot as needed to streamline
+      this process.
+    </div>
   </body>
 </html>
